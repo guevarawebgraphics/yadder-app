@@ -1,9 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SiteRestrictedController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::get('/restricted', [SiteRestrictedController::class, 'index'])->name('restricted.index');
+Route::post('/restricted', [SiteRestrictedController::class, 'verifyPassword'])->name('restricted.post');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -24,4 +28,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
