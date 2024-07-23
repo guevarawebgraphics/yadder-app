@@ -28,4 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/get-permissions', function () {
+    return auth()->check() ? auth()->user()->jsPermissions() : 0;
+});
+
 require __DIR__ . '/auth.php';
