@@ -14,7 +14,6 @@ class SiteRestrictedController extends Controller
 
     public function verifyPassword(Request $request)
     {
-
         $request->validate([
             'password' => 'required'
         ]);
@@ -23,7 +22,8 @@ class SiteRestrictedController extends Controller
             return redirect()->back()->withErrors(['password' => 'Invalid Password']);
         }
 
-        session()->put('restricted_verified', true);
+        // Set the restricted_verified flag in a cookie without expiration
+        cookie()->queue(cookie('restricted_verified', true));
 
         return redirect()->route('dashboard');
     }

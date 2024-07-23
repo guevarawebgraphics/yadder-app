@@ -22,7 +22,7 @@ class SiteRestricted
             return $next($request);
         }
 
-        if(session()->has('restricted_verified')) {
+        if ($request->cookie('restricted_verified')) {
             return $next($request);
         }
 
