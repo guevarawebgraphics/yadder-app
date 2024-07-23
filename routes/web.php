@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\GridController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RolesAndPermissionsController;
 use App\Http\Controllers\SiteRestrictedController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +28,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/roles-and-permissions', [RolesAndPermissionsController::class, 'index'])->name('roles-and-permissions');
+
+    //grids
+    Route::get('/grids', [GridController::class, 'index'])->name('grids');
+    Route::get('/grids/create', [GridController::class, 'create'])->name('grids.create');
+    Route::post('/grids/create', [GridController::class, 'store'])->name('grids.store');
 });
 
 Route::get('/get-permissions', function () {

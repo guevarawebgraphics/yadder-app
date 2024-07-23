@@ -47,4 +47,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function grids()
+    {
+        return $this->hasMany(Grid::class);
+    }
 }
