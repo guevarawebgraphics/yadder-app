@@ -28,12 +28,12 @@ const {props} = usePage()
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="grid grid-cols-3 gap-3">
-                        <div class="bg-white p-5 border rounded-lg" v-for="grid in props.grids">
+                        <Link :href="route('grids.edit', grid.id)" class="bg-white p-5 border rounded-lg" v-for="grid in props.grids">
                             <div class="w-full">
-                                <img src="/assets/images/grid.jpg" alt="grid">
+                                <img class="mx-auto" src="/assets/images/grid.jpg" alt="grid">
                             </div>
                             <div class="mt-3 text-center text-2xl">{{ grid.name }}</div>
-                        </div>
+                        </Link>
                     </div>
                 </div>
             </div>

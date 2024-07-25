@@ -3,6 +3,7 @@ import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 
 import {Link, usePage} from '@inertiajs/vue3';
 import {watchEffect} from "vue";
+import Navigation from "@/Layouts/Partials/Navigation.vue";
 
 const {props} = usePage()
 
@@ -22,33 +23,7 @@ watchEffect(() => {
                 <div class="max-w-[200px] mx-auto py-6">
                     <application-logo/>
                 </div>
-                <ul>
-                    <li>
-                        <Link
-                            class="py-3 px-6 hover:bg-primary hover:text-white block transition-all ease-in-out duration-300 "
-                            :href="route('dashboard')">Dashboard
-                        </Link>
-                    </li>
-
-                    <li>
-                        <Link
-                            class="py-3 px-6 hover:bg-primary hover:text-white block transition-all ease-in-out duration-300 "
-                            :href="route('profile.edit')">Profile
-                        </Link>
-                    </li>
-                    <li>
-                        <Link
-                            class="py-3 px-6 hover:bg-primary hover:text-white block transition-all ease-in-out duration-300 "
-                            :href="route('grids')">Grids
-                        </Link>
-                    </li>
-                    <li v-if="can('view roles')">
-                        <Link
-                            class="py-3 px-6 hover:bg-primary hover:text-white block transition-all ease-in-out duration-300 "
-                            :href="route('roles-and-permissions')">Roles & Permissions
-                        </Link>
-                    </li>
-                </ul>
+                <navigation/>
 
                 <ul class="mt-auto">
                     <li>

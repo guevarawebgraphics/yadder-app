@@ -32,4 +32,9 @@ class GridController extends Controller
 
         return redirect()->route('grids');
     }
+
+    public function edit(Request $request, Grid $grid)
+    {
+        return Inertia::render('Grids/Edit');
+    }
 }

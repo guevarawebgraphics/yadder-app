@@ -32,9 +32,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/roles-and-permissions', [RolesAndPermissionsController::class, 'index'])->name('roles-and-permissions');
 
     //grids
-    Route::get('/grids', [GridController::class, 'index'])->name('grids');
-    Route::get('/grids/create', [GridController::class, 'create'])->name('grids.create');
-    Route::post('/grids/create', [GridController::class, 'store'])->name('grids.store');
+    Route::prefix('/grids')->group(function () {
+        Route::get('/', [GridController::class, 'index'])->name('grids');
+        Route::get('/create', [GridController::class, 'create'])->name('grids.create');
+        Route::post('/create', [GridController::class, 'store'])->name('grids.store');
+        Route::get('/{grid}', [GridController::class, 'edit'])->name('grids.edit');
+    });
+
 });
 
 Route::get('/get-permissions', function () {
