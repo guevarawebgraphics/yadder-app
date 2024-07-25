@@ -10,7 +10,11 @@ class GridController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Grids/Index')->with(['grids' => auth()->user()->grids]);
+        $grid = auth()->user()->grids()->first();
+
+        $grid = $grid ? [$grid] : [];
+
+        return Inertia::render('Grids/Index')->with(['grids' => $grid]);
     }
 
     public function create()
