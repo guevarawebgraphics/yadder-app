@@ -30,12 +30,14 @@ const {grid} = props;
             </div>
 
             <div class="mx-auto sm:px-6 lg:px-8 p-5">
-                <div class="shadow-sm sm:rounded-lg bg-white p-2 w-fit">
-                    <grid-view v-if="grid" :data="grid"/>
-                    <div v-else class="min-h-[200px] flex flex-col justify-center items-center">
-                        <p class="mb-5 text-2xl"> Create your grid now! </p>
-                        <Link class="bg-primary text-white px-4 py-2 rounded-lg" :href="route('grids.create')">Create Grid</Link>
-                    </div>
+                <div v-if="grid" class="shadow-sm sm:rounded-lg bg-white p-2 w-fit">
+                    <grid-view :data="grid"/>
+                </div>
+                <div v-else
+                     class="min-h-[200px] flex flex-col justify-center items-center shadow-sm sm:rounded-lg bg-white p-2">
+                    <p class="mb-5 text-2xl"> Create your grid now! </p>
+                    <Link class="bg-primary text-white px-4 py-2 rounded-lg" :href="route('grids.create')">Create Grid
+                    </Link>
                 </div>
             </div>
         </div>
