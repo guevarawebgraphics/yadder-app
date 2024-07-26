@@ -18,6 +18,10 @@ class SiteRestricted
 
         $isRestricted = config('yadder.site.restricted');
 
+        if (!$isRestricted && $request->routeIs('restricted.index') || $request->routeIs('restricted.post')) {
+            return redirect()->route('login');
+        }
+
         if (!$isRestricted) {
             return $next($request);
         }
