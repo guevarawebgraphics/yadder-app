@@ -1,25 +1,38 @@
 <script setup>
-const {zone} = defineProps(['zone'])
+import Action from "@/Pages/Grids/components/Action.vue";
+import ZoneRow from "@/Pages/Grids/components/ZoneRow.vue";
+
+const {data, zone} = defineProps(['data', 'zone']);
+
+const getName = (i) => {
+    return data.actions[i - 1].name?.length ? data.actions[i - 1].name : 'Action ' + i;
+}
+
+const getZoneName = () => {
+    return data.name?.length ? data.name : `Zone ${zone}`;
+}
+
 </script>
 
 <template>
-    <table class="w-full border border-collaps">
+    <table class="w-full">
         <tbody>
-        <tr class="border">
-            <td class=" p-5 text-center border"> Action 1</td>
-            <td class=" p-5 text-center border"> Action 2</td>
-            <td class=" p-5 text-center border"> Action 3</td>
-        </tr>
-        <tr class="border">
-            <td class=" p-5 text-center border"> Action 8</td>
-            <td class=" p-5 text-center border bg-gray-100 font-semibold"> Zone {{ zone }}</td>
-            <td class=" p-5 text-center border"> Action 4</td>
-        </tr>
-        <tr class="border">
-            <td class=" p-5 text-center border"> Action 7</td>
-            <td class=" p-5 text-center border"> Action 6</td>
-            <td class=" p-5 text-center border"> Action 5</td>
-        </tr>
+        <zone-row>
+            <action :action="getName(1)"/>
+            <action :action="getName(2)"/>
+            <action :action="getName(3)"/>
+        </zone-row>
+        <zone-row>
+            <action :action="getName(8)"/>
+            <action :action="getZoneName()"
+                    :is-title="true"/>
+            <action :action="getName(4)"/>
+        </zone-row>
+        <zone-row>
+            <action :action="getName(7)"/>
+            <action :action="getName(6)"/>
+            <action :action="getName(5)"/>
+        </zone-row>
         </tbody>
     </table>
 </template>

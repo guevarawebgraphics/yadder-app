@@ -14,7 +14,9 @@ return new class extends Migration
     {
         Schema::create('zones', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable();
+            $table->string('key');
+
             $table->foreignIdFor(Grid::class);
 
             $table->timestamps();

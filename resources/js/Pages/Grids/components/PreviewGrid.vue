@@ -1,16 +1,14 @@
 <script setup>
-import ZoneActionsGrid from "@/Pages/Grids/components/ZoneActionsGrid.vue";
 import CardSection from "@/Components/CardSection.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import GridView from "@/Pages/Grids/components/GridView.vue";
+import {useGrid} from "@/Pages/Grids/store/useGrid.js";
+import {storeToRefs} from "pinia";
 
-const {
-    step,
-    setStep,
-} = defineProps([
-    'step',
-    'setStep',
-])
+const store = useGrid();
+const {setStep, submitForm} = store;
+
+const {form} = storeToRefs(store);
 
 </script>
 
@@ -23,11 +21,11 @@ const {
         </div>
 
         <!--TODO: Change to grid title-->
-        <grid-view name="MAIN GOAL"/>
+        <grid-view :data="form"/>
 
         <div class="flex justify-between mt-3">
             <primary-button role="button" @click.prevent="setStep(2)"> Previous</primary-button>
-            <primary-button role="button" type="button"> Save</primary-button>
+            <primary-button role="button" type="button" @click.prevent="submitForm"> Save</primary-button>
         </div>
     </card-section>
 

@@ -2,24 +2,21 @@
 
 import {FwbInput} from "flowbite-vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import {ref} from "vue";
 import GridLegend from "@/Pages/Grids/components/GridLegend.vue";
 import ZoneActionsGrid from "@/Pages/Grids/components/ZoneActionsGrid.vue";
 import CardSection from "@/Components/CardSection.vue";
+import {useGrid} from "@/Pages/Grids/store/useGrid.js";
+import {storeToRefs} from "pinia";
 
-const {step, setStep} = defineProps(['step', 'setStep'])
-
-let zone = ref(1);
-
-const setZone = (value) => {
-    zone.value = value
-}
+const store = useGrid();
+const {form, zone} = storeToRefs(store);
+const {setStep, setZone} = store;
 
 </script>
 
 <template>
     <card-section class="max-w-2xl mx-auto">
-        <zone-actions-grid :zone="zone"/>
+        <zone-actions-grid :data="form.zones[zone-1]" :zone="zone"/>
         <grid-legend :zone="zone"/>
         <div>
             <h2 class="text-center font-semibold text-lg mb-3">REVIEW AND EDIT GENERATED ACTIONS FOR ZONE 1 OF 8</h2>
@@ -27,46 +24,20 @@ const setZone = (value) => {
                 the
                 corresponding section of
                 your Yadder.</p>
+
+            <!-- Zone name input -->
             <fwb-input
+                v-model="form.zones[zone-1].name"
                 class="w-full block mb-3"
                 :placeholder="`Zone ${zone}` "
             />
-            <fwb-input
-                class="w-full block mb-3"
-                placeholder="Action 1"
-            />
 
+            <!-- actions input -->
             <fwb-input
+                v-for="i in form.zones[zone-1].actions.length"
+                v-model="form.zones[zone-1].actions[i-1].name"
                 class="w-full block mb-3"
-                placeholder="Action 2"
-            />
-
-            <fwb-input
-                class="w-full block mb-3"
-                placeholder="Action 3"
-            />
-
-            <fwb-input
-                class="w-full block mb-3"
-                placeholder="Action 4"
-            />
-            <fwb-input
-                class="w-full block mb-3"
-                placeholder="Action 5"
-            />
-            <fwb-input
-                class="w-full block mb-3"
-                placeholder="Action 6"
-            />
-
-            <fwb-input
-                class="w-full block mb-3"
-                placeholder="Action 7"
-            />
-
-            <fwb-input
-                class="w-full block mb-3"
-                placeholder="Action 8"
+                :placeholder="`Action ${i}`"
             />
 
             <div class="flex justify-between">

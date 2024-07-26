@@ -18,8 +18,8 @@ watchEffect(() => {
 
 <template>
     <div>
-        <div class="h-screen bg-gray-100 flex overflow-hidden">
-            <div class="pb-6 bg-white min-w-[260px] h-screen flex flex-col flex-grow-0 flex-shrink-0">
+        <div class="h-screen bg-gray-100 flex">
+            <div class="pb-6 bg-white w-[260px] h-screen shadow-lg flex flex-col flex-grow-0 flex-shrink-0 border-r">
                 <div class="max-w-[200px] mx-auto py-6">
                     <application-logo/>
                 </div>
@@ -37,7 +37,7 @@ watchEffect(() => {
                     </li>
                 </ul>
             </div>
-            <div class="flex-grow flex-shrink-0 overflow-auto">
+            <div class="flex-grow flex-shrink-0 overflow-auto" style="max-width: calc(100% - 260px); width: calc(100% - 260px)">
                 <slot/>
             </div>
         </div>
