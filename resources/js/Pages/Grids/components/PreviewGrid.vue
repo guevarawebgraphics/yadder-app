@@ -23,7 +23,7 @@ const {form} = storeToRefs(store);
         <!--TODO: Change to grid title-->
         <grid-view :data="form"/>
 
-        <div class="flex justify-between mt-3">
+        <div class="flex justify-end gap-2 mt-3">
             <primary-button role="button" @click.prevent="setStep(2)"> Previous</primary-button>
             <primary-button role="button" type="button" @click.prevent="submitForm"> Save</primary-button>
         </div>

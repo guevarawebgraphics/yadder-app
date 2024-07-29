@@ -7,3 +7,15 @@
 *{
     box-sizing: border-box;
 }
+
+@layer components{
+    .btn {
+        @apply px-4 py-2 rounded-lg
+    }
+
+    .btn-primary{
+        @apply bg-primary text-white
+    }
+}
+
+

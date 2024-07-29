@@ -1,11 +1,26 @@
-import {defineStore} from 'pinia';
+import {defineStore, mapGetters} from 'pinia';
 import {useForm} from "@inertiajs/vue3";
 
 export const useGrid = defineStore('gridForm', {
     state: () => ({
+        zoneForm: useForm({
+            zone: {
+                key: null,
+                name: '',
+                actions: [
+                    {name: ''},
+                    {name: ''},
+                    {name: ''},
+                    {name: ''},
+                    {name: ''},
+                    {name: ''},
+                    {name: ''},
+                    {name: ''},
+                ]
+            }
+        }),
         form: useForm({
             name: '',
-            useAi: false,
             zones: [
                 {
                     name: '',
@@ -116,10 +131,22 @@ export const useGrid = defineStore('gridForm', {
         zone: 1,
         step: 1,
         loading: false,
+        useAi: false,
     }),
     actions: {
         submitForm() {
             this.form.post(route('grids.store'), {
+                onSuccess: () => {
+                    console.log('Form submitted successfully!');
+                },
+                onError: () => {
+                    console.error('There was an error submitting the form.');
+                },
+            });
+        },
+        submitZoneUpdateForm() {
+            console.log(this.zoneForm);
+            this.zoneForm.post(route('grids.zone.update', {grid: this.zoneForm.grid_id, zone: this.zoneForm.id}), {
                 onSuccess: () => {
                     console.log('Form submitted successfully!');
                 },
@@ -154,7 +181,10 @@ export const useGrid = defineStore('gridForm', {
             }
 
             return true
-        }
+        },
+        setZoneForm(payload) {
+            this.zoneForm = useForm(payload)
+        },
     },
     getters: {
         zoneName(state) {

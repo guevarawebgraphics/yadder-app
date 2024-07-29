@@ -40,7 +40,7 @@ const {setStep, setZone} = store;
                 :placeholder="`Action ${i}`"
             />
 
-            <div class="flex justify-between">
+            <div class="flex justify-end gap-2">
                 <primary-button v-if="zone === 1" role="button" type="button" @click.prevent="setStep(1)"> Previous
                 </primary-button>
                 <primary-button v-else role="button" type="button" @click.prevent="setZone(zone-1)"> Previous Zone

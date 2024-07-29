@@ -36,7 +36,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [GridController::class, 'index'])->name('grids');
         Route::get('/create', [GridController::class, 'create'])->name('grids.create');
         Route::post('/create', [GridController::class, 'store'])->name('grids.store');
-        Route::get('/{grid}', [GridController::class, 'edit'])->name('grids.edit');
+
+        Route::get('/{grid}/zones/{zone}', [GridController::class, 'edit'])->name('grids.zone.edit');
+        Route::post('/{grid}/zones/{zone}', [GridController::class, 'updateZone'])->name('grids.zone.update');
     });
 
 });

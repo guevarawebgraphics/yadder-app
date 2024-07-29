@@ -78,8 +78,34 @@ class GridController extends Controller
         }
     }
 
-    public function edit(Request $request, Grid $grid)
+    public function edit(Request $request, Grid $grid, Zone $zone)
     {
-        return Inertia::render('Grids/Edit');
+        $zone->load(['actions']);
+
+        return Inertia::render('Grids/Edit')->with(['zone' => $zone]);
+    }
+
+    public function updateZone(Request $request, Grid $grid, Zone $zone)
+    {
+//        dd($request->all(), $zone);
+
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+        ]);
+
+        $data = $request->all();
+
+        //save zone changes
+        $zone->fill($data);
+        $zone->save();
+
+        //save actions changes
+        foreach ($data['actions'] as $action) {
+            $_action = Action::find($action['id']);
+            $_action->fill($action);
+            $_action->save();
+        }
+
+        return redirect()->route('grids');
     }
 }
