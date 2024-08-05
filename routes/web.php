@@ -4,6 +4,7 @@ use App\Http\Controllers\GridController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolesAndPermissionsController;
 use App\Http\Controllers\SiteRestrictedController;
+use App\Http\Controllers\KanbanController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,6 +40,11 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/{grid}/zones/{zone}', [GridController::class, 'edit'])->name('grids.zone.edit');
         Route::post('/{grid}/zones/{zone}', [GridController::class, 'updateZone'])->name('grids.zone.update');
+    });
+
+
+    Route::prefix('/kanban')->group(function () {
+        Route::get('/', [KanbanController::class, 'index']);
     });
 
 });
