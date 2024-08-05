@@ -21,23 +21,43 @@ const getColumnTasks = (status) => computed(() => tasks.value.filter(task => tas
 const onTaskDrop = (event) => {
     console.log('Drop Event:', event);
     const { newIndex, oldIndex, to, from, item } = event;
-    console.log('New Index:', newIndex);
-    console.log('Old Index:', oldIndex);
-    console.log('Item:', item);
-    console.log('To:', to);
-    console.log('From:', from);
 
-    const newStatus = to.getAttribute('data-status');
-    const oldStatus = from.getAttribute('data-status');
+    // Debug: Log the 'to' and 'from' elements
+    console.log('to element:', to);
+    console.log('from element:', from);
 
-    if (!item || !item.id) {
-        console.error('Dropped item is undefined or does not have an id');
+    const newStatus = to ? to.closest('[data-status]')?.getAttribute('data-status') : null;
+    const oldStatus = from ? from.closest('[data-status]')?.getAttribute('data-status') : null;
+
+    // Debug: Log the statuses
+    console.log('newStatus:', newStatus);
+    console.log('oldStatus:', oldStatus);
+
+    if (!newStatus || !oldStatus) {
+        console.error('Dropped element does not have a valid status');
         return;
     }
 
-    const task = tasks.value.find(task => task.id === item.id);
+    if (!item || !item.__draggable_context) {
+        console.error('Dropped item is undefined');
+        return;
+    }
+
+    const taskElement = item.__draggable_context.element;
+
+    if (!taskElement || !taskElement.id) {
+        console.error('Dropped element is undefined or does not have an id');
+        return;
+    }
+
+    const task = tasks.value.find(task => task.id === taskElement.id);
     if (task) {
         task.status = newStatus;
+
+        // Remove the task from its old position and add it to the new one
+        const taskIndex = tasks.value.indexOf(task);
+        tasks.value.splice(taskIndex, 1);
+        tasks.value.splice(newIndex, 0, task);
     }
 
     console.log('Updated Tasks:', tasks.value);
@@ -66,6 +86,8 @@ const onTaskDrop = (event) => {
                             :list="getColumnTasks(column.status).value" 
                             group="tasks" 
                             @end="onTaskDrop"
+                            itemKey="id"
+                            class="min-h-[50px]"
                         >
                             <template #item="{ element }">
                                 <div 
@@ -73,6 +95,10 @@ const onTaskDrop = (event) => {
                                 >
                                     {{ element.title }}
                                 </div>
+                            </template>
+                            <!-- Empty placeholder to ensure the column is always droppable -->
+                            <template #footer>
+                                <div v-if="getColumnTasks(column.status).value.length === 0" class="h-10"></div>
                             </template>
                         </draggable>
                     </div>
