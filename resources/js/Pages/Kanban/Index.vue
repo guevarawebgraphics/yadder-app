@@ -22,16 +22,8 @@ const onTaskDrop = (event) => {
     console.log('Drop Event:', event);
     const { newIndex, oldIndex, to, from, item } = event;
 
-    // Debug: Log the 'to' and 'from' elements
-    console.log('to element:', to);
-    console.log('from element:', from);
-
     const newStatus = to ? to.closest('[data-status]')?.getAttribute('data-status') : null;
     const oldStatus = from ? from.closest('[data-status]')?.getAttribute('data-status') : null;
-
-    // Debug: Log the statuses
-    console.log('newStatus:', newStatus);
-    console.log('oldStatus:', oldStatus);
 
     if (!newStatus || !oldStatus) {
         console.error('Dropped element does not have a valid status');
@@ -54,13 +46,21 @@ const onTaskDrop = (event) => {
     if (task) {
         task.status = newStatus;
 
-        // Remove the task from its old position and add it to the new one
         const taskIndex = tasks.value.indexOf(task);
         tasks.value.splice(taskIndex, 1);
         tasks.value.splice(newIndex, 0, task);
     }
 
     console.log('Updated Tasks:', tasks.value);
+};
+
+const addNewTask = (status) => {
+    const newTask = {
+        id: tasks.value.length ? tasks.value[tasks.value.length - 1].id + 1 : 1,
+        title: `Task ${tasks.value.length + 1}`,
+        status: status,
+    };
+    tasks.value.push(newTask);
 };
 </script>
 
@@ -81,7 +81,14 @@ const onTaskDrop = (event) => {
                         class="w-1/3 bg-gray-200 p-4 rounded"
                         :data-status="column.status"
                     >
-                        <h3 class="font-semibold text-lg mb-4">{{ column.name }}</h3>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-semibold text-lg">{{ column.name }}</h3>
+                            <button @click="addNewTask(column.status)" class="bg-blue-500 text-white p-2 rounded">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                </svg>
+                            </button>
+                        </div>
                         <draggable 
                             :list="getColumnTasks(column.status).value" 
                             group="tasks" 
@@ -96,7 +103,6 @@ const onTaskDrop = (event) => {
                                     {{ element.title }}
                                 </div>
                             </template>
-                            <!-- Empty placeholder to ensure the column is always droppable -->
                             <template #footer>
                                 <div v-if="getColumnTasks(column.status).value.length === 0" class="h-10"></div>
                             </template>
