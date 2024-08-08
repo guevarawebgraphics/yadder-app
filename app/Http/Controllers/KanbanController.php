@@ -10,12 +10,14 @@ use App\Models\Kanban\Assignees;
 use App\Models\Kanban\Tasks;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Str;
 
 class KanbanController extends Controller
 {
     public function index($gridID) {
         $stage = Stages::where('grid_id', $gridID)
                        ->whereNull('deleted_at')
+                       ->orderBy('position', 'ASC')  // Ensure stages are ordered by position
                        ->orderBy('created_at', 'DESC')
                        ->get();
     
@@ -40,12 +42,14 @@ class KanbanController extends Controller
     
             $stage = Stages::where('grid_id', $gridID)
                            ->whereNull('deleted_at')
+                           ->orderBy('position', 'ASC')  // Ensure stages are ordered by position
                            ->orderBy('created_at', 'DESC')
                            ->get();
         }
     
         $zones = Zone::with('actions')->where('grid_id', $gridID)->orderBy('key', 'DESC')->get();
-        return Inertia::render('Kanban/Index', ['stages' => $stage, 'zones' => $zones]);
+
+        return Inertia::render('Kanban/Index', ['stages' => $stage, 'zones' => $zones, 'grid_id'    =>  $gridID]);
     }
     
     public function updateTasksStatus(Request $request) {
@@ -104,6 +108,26 @@ class KanbanController extends Controller
     
         return response()->json(['message' => 'Stage name updated successfully']);
     }
+
+    public function createStage(Request $request) {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'grid_id' => 'required|integer|exists:grids,id'
+        ]);
+    
+        $slug = Str::slug($request->name);
+    
+        $stage = Stages::create([
+            'name' => $request->name,
+            'slug' => $slug,
+            'user_id' => auth()->user()->id,
+            'grid_id' => $request->grid_id,
+            'position' => Stages::where('grid_id', $request->grid_id)->max('position') + 1
+        ]);
+    
+        return response()->json($stage);
+    }
+    
     
     
 }

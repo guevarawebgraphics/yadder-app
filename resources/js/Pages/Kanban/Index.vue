@@ -8,6 +8,7 @@ import axios from 'axios';
 const { props } = usePage();
 const stages = ref(props.stages);
 const zones = ref(props.zones);
+const gridId = ref(props.grid_id); // Added to get grid_id from props
 
 const columns = ref(stages.value.map(stage => ({
     id: stage.id,
@@ -88,6 +89,26 @@ const updateColumnName = async (column) => {
     }
 };
 
+const addNewColumn = async () => {
+    const columnName = prompt('Enter column name:');
+    if (columnName) {
+        try {
+            const response = await axios.post('/kanban/stages/create', {
+                name: columnName,
+                grid_id: gridId.value // Use the grid_id from props
+            });
+            columns.value.push({
+                id: response.data.id,
+                name: response.data.name,
+                status: response.data.slug
+            });
+            console.log('Column created successfully');
+        } catch (error) {
+            console.error('Failed to create column:', error);
+        }
+    }
+};
+
 const addNewTask = (status) => {
     const newTask = {
         id: tasks.value.length ? tasks.value[tasks.value.length - 1].id + 1 : 1,
@@ -147,6 +168,10 @@ const addNewTask = (status) => {
                                 <div v-if="getColumnTasks(column.status).value.length === 0" class="h-10"></div>
                             </template>
                         </draggable>
+                    </div>
+                    <!-- Add new column button -->
+                    <div class="w-1/3 bg-gray-200 p-4 rounded flex justify-center items-center">
+                        <button @click="addNewColumn" class="bg-blue-500 text-white p-2 rounded">+ Add Column</button>
                     </div>
                 </div>
             </div>
