@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('kanban_stages', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug');
             $table->string('user_id');
+            $table->string('grid_id');
             $table->integer('position')->default(0);
             $table->softDeletes();
             $table->timestamps();

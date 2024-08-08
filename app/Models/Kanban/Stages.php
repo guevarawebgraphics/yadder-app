@@ -13,6 +13,8 @@ class Stages extends Model
 
     protected $fillable = [
         'name',
+        'slug',
+        'grid_id',
         'position',
         'user_id'
     ];

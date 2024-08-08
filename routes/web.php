@@ -44,9 +44,10 @@ Route::middleware('auth')->group(function () {
 
 
     Route::prefix('/kanban')->group(function () {
-        Route::get('/', [KanbanController::class, 'index'])->name('kanban.index');
+        Route::get('/grid/{id}', [KanbanController::class, 'index'])->name('kanban.index');
         Route::post('/stages/store', [KanbanController::class, 'storeStages'])->name('kanban.stages.store');
         Route::post('/tasks/store', [KanbanController::class, 'storeTasks'])->name('kanban.tasks.store');
+        Route::post('/tasks/update-status', [KanbanController::class, 'updateTasksStatus']);
     });
 
 });

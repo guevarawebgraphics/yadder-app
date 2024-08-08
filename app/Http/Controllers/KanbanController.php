@@ -13,10 +13,55 @@ use Inertia\Inertia;
 
 class KanbanController extends Controller
 {
-    public function index() {
-       
-        return Inertia::render('Kanban/Index');
+    public function index($gridID) {
+        $stage = Stages::where('grid_id', $gridID)
+                       ->whereNull('deleted_at')
+                       ->orderBy('created_at', 'DESC')
+                       ->get();
+    
+        if ($stage->isEmpty()) {
+            $stage_array = [
+                ['name' => 'To Schedule', 'slug' => 'to-schedule'],
+                ['name' => 'In Schedule', 'slug' => 'in-schedule'],
+                ['name' => 'Today', 'slug' => 'today'],
+                ['name' => 'Doing', 'slug' => 'doing'],
+                ['name' => 'Done', 'slug' => 'done']
+            ];
+    
+            foreach ($stage_array as $index => $field) {
+                Stages::create([
+                    'name' => $field['name'],
+                    'slug' => $field['slug'], // Ensure slug is included
+                    'user_id' => auth()->user()->id,
+                    'grid_id' => $gridID,
+                    'position' => $index + 1
+                ]);
+            }
+    
+            $stage = Stages::where('grid_id', $gridID)
+                           ->whereNull('deleted_at')
+                           ->orderBy('created_at', 'DESC')
+                           ->get();
+        }
+    
+        $zones = Zone::with('actions')->where('grid_id', $gridID)->orderBy('key', 'DESC')->get();
+        return Inertia::render('Kanban/Index', ['stages' => $stage, 'zones' => $zones]);
     }
+    
+    public function updateTasksStatus(Request $request) {
+        $request->validate([
+            'taskId' => 'required|integer|exists:actions,id',
+            'kanbanStatus' => 'required|string'
+        ]);
+    
+        $action = Action::findOrFail($request->taskId);
+        $action->kanban_status = $request->kanbanStatus;
+        $action->save();
+    
+        return response()->json(['message' => 'Status updated successfully']);
+    }
+    
+    
 
     public function storeStages(Request $request) {
 

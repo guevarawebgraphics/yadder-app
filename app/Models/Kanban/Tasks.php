@@ -9,10 +9,10 @@ class Tasks extends Model
 {
     use HasFactory;
     
-    protected $table = 'kanban_tasks';
+    protected $table = 'kanban_actions';
 
     protected $fillable = [
-        'name',
+        'action_id',
         'description',
         'stage_id',
         'due_date'

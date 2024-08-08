@@ -1,24 +1,35 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import draggable from 'vuedraggable';
+import axios from 'axios';
 
-const tasks = ref([
-    { id: 1, title: 'Task 1', status: 'todo' },
-    { id: 2, title: 'Task 2', status: 'in-progress' },
-    { id: 3, title: 'Task 3', status: 'done' },
-]);
+const { props } = usePage();
+const stages = ref(props.stages);
+const zones = ref(props.zones);
 
-const columns = ref([
-    { name: 'To Do', status: 'todo' },
-    { name: 'In Progress', status: 'in-progress' },
-    { name: 'Done', status: 'done' },
-]);
+const columns = ref(stages.value.map(stage => ({
+    name: stage.name,
+    status: stage.slug
+})));
+
+const tasks = ref([]);
+
+// Populate tasks from zones actions
+zones.value.forEach(zone => {
+    zone.actions.forEach((action, index) => {
+        tasks.value.push({
+            id: action.id,
+            title: action.name ? action.name : `Action ${index + 1}`,
+            status: action.kanban_status ? action.kanban_status : 'to-schedule'
+        });
+    });
+});
 
 const getColumnTasks = (status) => computed(() => tasks.value.filter(task => task.status === status));
 
-const onTaskDrop = (event) => {
+const onTaskDrop = async (event) => {
     console.log('Drop Event:', event);
     const { newIndex, oldIndex, to, from, item } = event;
 
@@ -49,6 +60,16 @@ const onTaskDrop = (event) => {
         const taskIndex = tasks.value.indexOf(task);
         tasks.value.splice(taskIndex, 1);
         tasks.value.splice(newIndex, 0, task);
+
+        try {
+            await axios.post('/kanban/tasks/update-status', {
+                taskId: task.id,
+                kanbanStatus: newStatus
+            });
+            console.log('Status updated successfully');
+        } catch (error) {
+            console.error('Failed to update status:', error);
+        }
     }
 
     console.log('Updated Tasks:', tasks.value);
@@ -83,11 +104,11 @@ const addNewTask = (status) => {
                     >
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="font-semibold text-lg">{{ column.name }}</h3>
-                            <button @click="addNewTask(column.status)" class="bg-blue-500 text-white p-2 rounded">
+                            <!-- <button @click="addNewTask(column.status)" class="bg-blue-500 text-white p-2 rounded">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                 </svg>
-                            </button>
+                            </button> -->
                         </div>
                         <draggable 
                             :list="getColumnTasks(column.status).value" 

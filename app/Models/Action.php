@@ -9,7 +9,7 @@ class Action extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'key'];
+    protected $fillable = ['name', 'key','kanban_status'];
 
 
     public function zone()
