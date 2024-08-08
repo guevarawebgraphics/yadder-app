@@ -10,6 +10,7 @@ const stages = ref(props.stages);
 const zones = ref(props.zones);
 
 const columns = ref(stages.value.map(stage => ({
+    id: stage.id,
     name: stage.name,
     status: stage.slug
 })));
@@ -75,6 +76,18 @@ const onTaskDrop = async (event) => {
     console.log('Updated Tasks:', tasks.value);
 };
 
+const updateColumnName = async (column) => {
+    try {
+        await axios.post('/kanban/stages/update-name', {
+            stageId: column.id,
+            name: column.name
+        });
+        console.log('Column name updated successfully');
+    } catch (error) {
+        console.error('Failed to update column name:', error);
+    }
+};
+
 const addNewTask = (status) => {
     const newTask = {
         id: tasks.value.length ? tasks.value[tasks.value.length - 1].id + 1 : 1,
@@ -103,7 +116,13 @@ const addNewTask = (status) => {
                         :data-status="column.status"
                     >
                         <div class="flex justify-between items-center mb-4">
-                            <h3 class="font-semibold text-lg">{{ column.name }}</h3>
+                            <input
+                                type="text"
+                                class="font-semibold text-lg bg-transparent border-none"
+                                v-model="column.name"
+                                @blur="updateColumnName(column)"
+                                @keydown.enter.prevent="updateColumnName(column)"
+                            />
                             <!-- <button @click="addNewTask(column.status)" class="bg-blue-500 text-white p-2 rounded">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -138,5 +157,17 @@ const addNewTask = (status) => {
 <style>
 .draggable {
     min-height: 300px;
+}
+input {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: none;
+}
+input:focus {
+    outline: none;
+    border-bottom: 1px solid #000;
 }
 </style>

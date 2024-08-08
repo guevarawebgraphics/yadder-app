@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/stages/store', [KanbanController::class, 'storeStages'])->name('kanban.stages.store');
         Route::post('/tasks/store', [KanbanController::class, 'storeTasks'])->name('kanban.tasks.store');
         Route::post('/tasks/update-status', [KanbanController::class, 'updateTasksStatus']);
+        Route::post('/stages/update-name', [KanbanController::class, 'updateStageName']);
     });
 
 });

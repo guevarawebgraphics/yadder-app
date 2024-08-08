@@ -90,5 +90,20 @@ class KanbanController extends Controller
 
         return redirect()->route('kanban.index');
     }
+
+
+    public function updateStageName(Request $request) {
+        $request->validate([
+            'stageId' => 'required|integer|exists:kanban_stages,id',
+            'name' => 'required|string|max:255'
+        ]);
+    
+        $stage = Stages::findOrFail($request->stageId);
+        $stage->name = $request->name;
+        $stage->save();
+    
+        return response()->json(['message' => 'Stage name updated successfully']);
+    }
+    
     
 }
