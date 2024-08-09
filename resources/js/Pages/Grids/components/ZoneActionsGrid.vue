@@ -1,8 +1,10 @@
 <script setup>
 import {router} from '@inertiajs/vue3';
+import draggable from 'vuedraggable'; // Import draggable
 
 import Action from "@/Pages/Grids/components/Action.vue";
 import ZoneRow from "@/Pages/Grids/components/ZoneRow.vue";
+
 
 const {gridId, data, zone} = defineProps({
     gridId: {

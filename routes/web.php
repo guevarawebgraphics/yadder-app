@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/tasks/update-status', [KanbanController::class, 'updateTasksStatus']);
         Route::post('/stages/update-name', [KanbanController::class, 'updateStageName']);
         Route::post('/stages/create', [KanbanController::class, 'createStage']);
+        Route::post('/stages/delete', [KanbanController::class, 'deleteStage']);
     });
 
 });

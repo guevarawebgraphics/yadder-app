@@ -4,6 +4,7 @@ import { Head, usePage } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import draggable from 'vuedraggable';
 import axios from 'axios';
+import GridView from "@/Pages/Grids/components/GridView.vue";
 
 const showModal = ref(false); // Control modal visibility
 const newColumnName = ref(''); // To store the new column name
@@ -12,6 +13,7 @@ const { props } = usePage();
 const stages = ref(props.stages);
 const zones = ref(props.zones);
 const gridId = ref(props.grid_id); // Added to get grid_id from props
+const {grid} = props;
 
 const columns = ref(stages.value.map(stage => ({
     id: stage.id,
@@ -24,11 +26,13 @@ const tasks = ref([]);
 // Populate tasks from zones actions
 zones.value.forEach(zone => {
     zone.actions.forEach((action, index) => {
-        tasks.value.push({
-            id: action.id,
-            title: action.name ? action.name : `Action ${index + 1}`,
-            status: action.kanban_status ? action.kanban_status : 'to-schedule'
-        });
+        if (action.kanban_status) {
+            tasks.value.push({
+                id: action.id,
+                title: action.name ? action.name : `Action ${index + 1}`,
+                status: action.kanban_status ? action.kanban_status : 'to-schedule'
+            });
+        }
     });
 });
 
@@ -121,6 +125,31 @@ const addNewTask = (status) => {
     };
     tasks.value.push(newTask);
 };
+
+const deleteColumn = async (column) => {
+    const tasksInColumn = getColumnTasks(column.status).value;
+
+    if (tasksInColumn.length > 0) {
+        console.error('Cannot delete column with tasks.');
+        return;
+    }
+
+    try {
+        await axios.post('/kanban/stages/delete', {
+            stageId: column.id
+        });
+
+        const columnIndex = columns.value.indexOf(column);
+        if (columnIndex > -1) {
+            columns.value.splice(columnIndex, 1);
+        }
+
+        console.log('Column deleted successfully');
+    } catch (error) {
+        console.error('Failed to delete column:', error);
+    }
+};
+
 </script>
 
 <template>
@@ -130,6 +159,12 @@ const addNewTask = (status) => {
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Kanban</h2>
         </template>
+
+        <div class="mx-auto sm:px-6 lg:px-8 p-5">
+            <div v-if="grid" class="shadow-sm sm:rounded-lg bg-white p-2 w-fit">
+                <grid-view :data="grid"/>
+            </div>
+        </div>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -166,6 +201,16 @@ const addNewTask = (status) => {
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                 </svg>
                             </button> -->
+
+                            <div>
+                                <!-- Add the delete button -->
+                                <button
+                                    @click="deleteColumn(column)"
+                                    v-if="getColumnTasks(column.status).value.length === 0" 
+                                    class="bg-red-500 text-white p-2 rounded">
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                         <draggable 
                             :list="getColumnTasks(column.status).value" 

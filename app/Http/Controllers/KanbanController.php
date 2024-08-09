@@ -15,6 +15,20 @@ use Str;
 class KanbanController extends Controller
 {
     public function index($gridID) {
+
+
+        $grid = Grid::with(['zones','zones.actions'])
+            ->where('user_id', auth()->user()->id )
+            ->where(function () {
+
+            })
+            ->where('id', $gridID)
+            ->first();
+        
+        if (empty($grid)) {
+            abort(404,404);
+        }
+
         $stage = Stages::where('grid_id', $gridID)
                        ->whereNull('deleted_at')
                        ->orderBy('position', 'ASC')  // Ensure stages are ordered by position
@@ -49,7 +63,7 @@ class KanbanController extends Controller
     
         $zones = Zone::with('actions')->where('grid_id', $gridID)->orderBy('key', 'DESC')->get();
 
-        return Inertia::render('Kanban/Index', ['stages' => $stage, 'zones' => $zones, 'grid_id'    =>  $gridID]);
+        return Inertia::render('Kanban/Index', ['stages' => $stage, 'zones' => $zones, 'grid_id'  =>  $gridID])->with(['grid' => $grid]);
     }
     
     public function updateTasksStatus(Request $request) {
@@ -129,6 +143,19 @@ class KanbanController extends Controller
     }
     
     
-    
+    public function deleteStage(Request $request)
+    {
+        $stageId = $request->input('stageId');
+        // Assuming you have a Stage model
+        $stage = Stages::find($stageId);
+
+        if ($stage) {
+            $stage->delete();
+            return response()->json(['status' => 'success']);
+        }
+
+        return response()->json(['status' => 'error', 'message' => 'Stage not found'], 404);
+    }
+
     
 }
