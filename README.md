@@ -1,66 +1,75 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Yadder – AI-Driven Project Management App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Welcome to **Yadder** – an AI-powered project management tool designed to help you brainstorm, generate, and manage tasks visually and intelligently.
 
-## About Laravel
+🚀 Live at:
+- 🌐 [Website](https://yadder.com)
+- 🧭 [App Dashboard](https://app.yadder.com)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📌 Overview
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Yadder is a smart, AI-integrated project and task planner built with **Laravel**, **Vue.js**, and **OpenAI**. Whether you're planning a vacation, launching a product, or organizing an event, Yadder helps break down your main idea into structured, actionable tasks grouped into visual "Zones."
 
-## Learning Laravel
+For example, you could say:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+> _"Create me an itinerary plan for travel in Europe"_
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Within seconds, the AI will populate a structured task board – with each **Zone** representing a topic category (e.g., Flights, Hotels, Activities), and each **Action** representing a specific task to complete.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 🧠 Key Features
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- 🧾 **AI-Powered Task Generation** using OpenAI (GPT)
+- 📦 **Zone-Based Layout** to categorize and organize tasks
+- ✏️ **Editable Task Actions** with user-friendly controls
+- 🖼️ **Visual Grid Display** for an at-a-glance project overview
+- ⚙️ **Tech Stack**: Laravel (backend), Vue.js (frontend), Tailwind CSS
+- ☁️ **Cloud-Based** – access your workspace from anywhere
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## 🛠️ Tech Stack
 
-## Contributing
+- **Laravel** – PHP backend framework for APIs and logic
+- **Vue.js** – Dynamic, reactive front-end framework
+- **Tailwind CSS** – Utility-first CSS for modern design
+- **OpenAI API** – For intelligent, contextual task generation
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 💡 Use Cases
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Yadder is great for:
 
-## Security Vulnerabilities
+- ✅ Travel planning
+- ✅ Event management
+- ✅ Product development
+- ✅ Study schedules
+- ✅ Content creation workflows
+- ✅ Marketing campaign planning
+- ... and much more!
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 📸 Visual Layout
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Tasks are generated and displayed in a grid layout. Each **Zone** represents a subcategory, and each box inside it contains an **Action**. You can edit these actions or let the AI handle the heavy lifting.
+
+🖼️ Example:
+
+![image](https://github.com/user-attachments/assets/969afe08-d924-4a52-a373-22714b074497)
+
+
+---
+
+## 📬 Contact & Feedback
+
+Got suggestions or want to get involved?  
+Visit [yadder.com](https://yadder.com) or use the in-app feedback system to share your thoughts.
+
+---
+
+> **Think it. Type it. Yadder it.**
